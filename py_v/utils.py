@@ -1,7 +1,5 @@
 import random
 
-LOG_FILE = {"odds": "odds", "battle": "battle"}
-
 
 class Die(object):
 
@@ -14,7 +12,8 @@ class Die(object):
 
 class GameLogger(object):
     LOG_EXT = '.log'
-    LOG_DIR = 'log/'
+    LOG_DIR = './log/'
+    LOG_FILE = {"odds": "odds", "battle": "battle"}
 
     def __init__(self, file_name="log"):
         self.file_name = GameLogger.LOG_DIR + file_name + GameLogger.LOG_EXT
@@ -22,22 +21,25 @@ class GameLogger(object):
 
     def parse_run(self):
         number = 0
-        with open(self.file_name, "r") as in_file:
-            header = in_file.readline()
-            words = header.split(" ")
-            number = words[-2]
-            try:
-                number = int(number)
-            except:
-                pass
+        try:
+            with open(self.file_name, "r+") as in_file:
+                header = in_file.readline()
+                words = header.split(" ")
+                number = words[-2]
+                try:
+                    number = int(number)
+                except:
+                    pass
+        except:
+            pass
         return number + 1
 
     def clean(self):
-        with open(self.file_name, "w") as out_file:
+        with open(self.file_name, "w+") as out_file:
             out_file.write("== TEST %3d ==\n" % self.run_number)
 
     def write(self, line):
-        with open(self.file_name, "a") as out_file:
+        with open(self.file_name, "a+") as out_file:
             out_file.write("%s\n" % line)
 
 
@@ -48,7 +50,7 @@ class GameStatsLogger(GameLogger):
 
     def append(self, stats):
         # https://en.wikibooks.org/wiki/Non-Programmer's_Tutorial_for_Python_3/File_IO
-        with open(self.file_name, "a") as out_file:
+        with open(self.file_name, "a+") as out_file:
             for hero in stats:
                 h_stats = stats[hero]
 

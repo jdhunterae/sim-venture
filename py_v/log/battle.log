@@ -1,0 +1,4 @@
+== TEST  23 ==
+
+Battle.__init__(): Start Logging Battle #  1
+  Battle.is_active(): no one in party_2 - battle over

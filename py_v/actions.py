@@ -1,5 +1,5 @@
 from utils import *
-from effect import *
+from effects import *
 
 
 class Action(object):
@@ -17,7 +17,7 @@ class Action(object):
             self.failure_effect.cause(targets)
 
     def choose_targets(self, target_options):
-        if type(target_options) is not type([]):
+        if not isinstance(target_options, list):
             target_options = [target_options]
         return target_options
 
@@ -44,7 +44,7 @@ class AttackAction(Action):
         return None
 
 
-class EscapeAction(action):
+class EscapeAction(Action):
 
     def __init__(self, actor):
         super(EscapeAction, self).__init__(actor)

@@ -61,5 +61,33 @@ class EscapeAction < Action
   end
 end
 
-
 class MagicMissleAction < Action
+  def initialize(actor)
+    super(actor)
+    @success_effect = MagicDamageEffect(self)
+    @failure_effect = MagicMissEffect(self)
+  end
+
+  def perform(target_options)
+    super(target_options)
+    @actor.mana = [0, @actor.mana - 1].max
+  end
+
+  def attempt(targets)
+    if @actor.mana >= 1
+      return super(targets)
+    else
+      return false
+    end
+  end
+
+  def choose_targets(_target_options)
+    super(target_options)
+
+    targets = [] << target_options
+    targets -= [@actor]
+
+    return targets if targets
+    nil
+  end
+end
