@@ -1,6 +1,6 @@
 import random
 
-LOG_FILE = {"odds": "odds.log", "battle": "battle.log"}
+LOG_FILE = {"odds": "odds", "battle": "battle"}
 
 
 class Die(object):
@@ -13,9 +13,11 @@ class Die(object):
 
 
 class GameLogger(object):
+    LOG_EXT = '.log'
+    LOG_DIR = 'log/'
 
-    def __init__(self, file_name="log.log"):
-        self.file_name = file_name
+    def __init__(self, file_name="log"):
+        self.file_name = GameLogger.LOG_DIR + file_name + GameLogger.LOG_EXT
         self.run_number = self.parse_run()
 
     def parse_run(self):

@@ -1,4 +1,4 @@
-LOG_FILE = { odds: 'odds.log', battle: 'battle.log' }
+LOG_FILE = { odds: 'odds', battle: 'battle' }
 
 class Die
   def initialize(sides = 6)
@@ -23,24 +23,51 @@ class GameLogger
     number = 0
 
     if File.file?(@file_name)
-      in_file = open(@file_name, 'r')
-      header = in_file.readline
-      words = header.split(' ')
-      number = words[-2].to_i
-      in_file.close
+      File.open(@file_name, 'r') do |in_file|
+        header = in_file.readline
+        words = header.split(' ')
+        number = words[-2].to_i
+      end
     end
 
     number + 1
   end
 
   def clean
-    out_file = open(@file_name, 'w')
-    out_file.write("== TEST #{@run_number} ==\n")
-    out_file.close
+    File.open(@file_name, 'w') { |out_file| out_file.write("== TEST #{@run_number} ==\n") }
   end
 
   def write(line)
-    out_file = open(@file_name, 'a')
-    out_file.write("#{line}\n")
+    File.open(@file_name, 'a') { |out_file| out_file.write("#{line}\n") }
+  end
+end
+
+class GameStatsLogger < GameLogger
+  def initialize(file_name)
+    super(file_name)
+  end
+
+  def append(stats)
+    File.open(@file_name, 'a') do |out_file|
+      stats.each do |hero|
+        h_stats = stats[hero]
+
+        out_file.write("::: #{hero} :::\n")
+        h_stats.each do |mon|
+          m_stats = h_stats[mon]
+          win = m_stats['win']
+          lose = m_stats['lose']
+          draw = m_stats['draw']
+          tot = win + lose + draw
+
+          out_file.write("  :: #{mon} ::\n")
+          out_file.write("    W %3d  |  L %3d  |  D %3d  |  T %3d\n".format(win, lose, draw, tot))
+          out_file.write("      %3d%% |    %3d%% |    %3d%%\n".format(100.0 * win / tot, 100.0 * lose / tot, 100.0 * draw / tot))
+          out_file.write("\n")
+        end
+
+        out_file.write("\n\n\n\n::: DUMP :::\n#{stats}")
+      end
+    end
   end
 end
