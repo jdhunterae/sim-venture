@@ -20,8 +20,8 @@ class Character
     @inventory = inventory
 
     @actions = []
-    @attack_action = AttackAction(self)
-    @escape_action = EscapeAction(self)
+    @attack_action = AttackAction.new(self)
+    @escape_action = EscapeAction.new(self)
     @actions << @attack_action
     @actions << @escape_action
 
@@ -54,10 +54,10 @@ class Character
   end
 
   def get_sheet
-    sheet = "== %-20s === LV %2d | [%8s]\n".format(@name, @level, self.class.name.upcase)
-    sheet += "   heal  (  %3d / %3d )  mana  (  %3d / %3d )\n".format(@health, @health_max, @mana, @mana_max)
-    sheet += "   phys  < %2d >  [ %2d ]               exp: %3d\n".format(@attack_p, @defense_p, @experience)
-    sheet += "   magi  < %2d >  [ %2d ]\n".format(@attack_m, @defense_m)
+    sheet = "== %-20s === LV %2d | [%8s]\n" % [@name, @level, self.class.name.upcase]
+    sheet += "   heal  (  %3d / %3d )  mana  (  %3d / %3d )\n" % [@health, @health_max, @mana, @mana_max]
+    sheet += "   phys  < %2d >  [ %2d ]               exp: %3d\n" % [@attack_p, @defense_p, @experience]
+    sheet += "   magi  < %2d >  [ %2d ]\n" % [@attack_m, @defense_m]
     sheet
   end
 end
@@ -69,10 +69,10 @@ class Player < Character
   end
 
   def get_sheet
-    sheet = "== %-20s === LV %2d | [%8s]\n".format(@name, @level, self.class.name.upcase)
-    sheet += "   heal  (  %3d / %3d )  mana  (  %3d / %3d )\n".format(@health, @health_max, @mana, @mana_max)
-    sheet += "   phys  < %2d >  [ %2d ]               exp: %3d\n".format(@attack_p, @defense_p, @experience)
-    sheet += "   magi  < %2d >  [ %2d ]            to nxt: %3d\n".format(@attack_m, @defense_m, @experience_to_next_level)
+    sheet = "== %-20s === LV %2d | [%8s]\n" % [@name, @level, self.class.name.upcase]
+    sheet += "   heal  (  %3d / %3d )  mana  (  %3d / %3d )\n" % [@health, @health_max, @mana, @mana_max]
+    sheet += "   phys  < %2d >  [ %2d ]               exp: %3d\n" % [@attack_p, @defense_p, @experience]
+    sheet += "   magi  < %2d >  [ %2d ]            to nxt: %3d\n" % [@attack_m, @defense_m, @experience_to_next_level]
     sheet
   end
 end
@@ -92,7 +92,7 @@ end
 class Mage < Player
   def initialize
     super('Gary', 6, 2, 2, 6, 3, 3)
-    @magic_action = MagicMissleAction(self)
+    @magic_action = MagicMissleAction.new(self)
     @actions << @magic_action
   end
 

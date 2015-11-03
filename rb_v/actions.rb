@@ -6,8 +6,8 @@ class Action
 
   def initialize(actor)
     @actor = actor
-    @success_effect = NoEffect(self)
-    @failure_effect = NoEffect(self)
+    @success_effect = NoEffect.new(self)
+    @failure_effect = NoEffect.new(self)
   end
 
   def perform(target_options)
@@ -19,7 +19,7 @@ class Action
     end
   end
 
-  def choose_targets(_target_options)
+  def choose_targets(target_options)
     if target_options.class.name != [].class.name
       target_options = [target_options]
     end
@@ -38,8 +38,8 @@ end
 class AttackAction < Action
   def initialize(actor)
     super(actor)
-    @success_effect = DamageEffect(self)
-    @failure_effect = MissEffect(self)
+    @success_effect = DamageEffect.new(self)
+    @failure_effect = MissEffect.new(self)
   end
 
   def choose_targets(target_options)
@@ -56,16 +56,16 @@ end
 class EscapeAction < Action
   def initialize(actor)
     super(actor)
-    @success_effect = RunAwayEffect(self)
-    @failure_effect = BlockedEffect(self)
+    @success_effect = RunAwayEffect.new(self)
+    @failure_effect = BlockedEffect.new(self)
   end
 end
 
 class MagicMissleAction < Action
   def initialize(actor)
     super(actor)
-    @success_effect = MagicDamageEffect(self)
-    @failure_effect = MagicMissEffect(self)
+    @success_effect = MagicDamageEffect.new(self)
+    @failure_effect = MagicMissEffect.new(self)
   end
 
   def perform(target_options)
@@ -81,7 +81,7 @@ class MagicMissleAction < Action
     end
   end
 
-  def choose_targets(_target_options)
+  def choose_targets(target_options)
     super(target_options)
 
     targets = [] << target_options

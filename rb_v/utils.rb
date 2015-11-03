@@ -1,4 +1,4 @@
-LOG_FILE = { odds: 'odds', battle: 'battle' }
+
 
 class Die
   def initialize(sides = 6)
@@ -11,6 +11,7 @@ class Die
 end
 
 class GameLogger
+  LOG_FILE = { odds: 'odds', battle: 'battle' }
   LOG_EXT = '.log'
   LOG_DIR = 'log/'
 
@@ -45,6 +46,7 @@ end
 class GameStatsLogger < GameLogger
   def initialize(file_name)
     super(file_name)
+    clean
   end
 
   def append(stats)
@@ -65,9 +67,8 @@ class GameStatsLogger < GameLogger
           out_file.write("      %3d%% |    %3d%% |    %3d%%\n".format(100.0 * win / tot, 100.0 * lose / tot, 100.0 * draw / tot))
           out_file.write("\n")
         end
-
-        out_file.write("\n\n\n\n::: DUMP :::\n#{stats}")
       end
+      out_file.write("\n\n\n\n::: DUMP :::\n#{stats}")
     end
   end
 end

@@ -90,6 +90,9 @@ class MagicDamageEffect < Effect
   def cause(targets)
     if targets
       targets.each do |target|
+        puts "targets: #{targets}"
+        puts "target:  #{target}"
+        
         target.health = [0, target.health - @action.actor.attack_m].max
         puts "#{@action.actor.name} launches a barrage of magical missiles at #{target.name} for #{@action.actor.attack_m} damage..."
         puts "    #{target.name}: #{target.health}/#{target.health_max}"
